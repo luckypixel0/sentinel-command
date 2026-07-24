@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as MapRouteImport } from './routes/map'
@@ -17,10 +18,16 @@ import { Route as IntelligenceRouteImport } from './routes/intelligence'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as AdministrationRouteImport } from './routes/administration'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InvestigationIndexRouteImport } from './routes/investigation.index'
 import { Route as InvestigationFirIdRouteImport } from './routes/investigation.$firId'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
@@ -61,6 +68,11 @@ const AnalyticsRoute = AnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdministrationRoute = AdministrationRouteImport.update({
+  id: '/administration',
+  path: '/administration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -79,6 +91,7 @@ const InvestigationFirIdRoute = InvestigationFirIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/administration': typeof AdministrationRoute
   '/analytics': typeof AnalyticsRoute
   '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -87,11 +100,13 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/predictions': typeof PredictionsRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation/': typeof InvestigationIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/administration': typeof AdministrationRoute
   '/analytics': typeof AnalyticsRoute
   '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -100,12 +115,14 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/predictions': typeof PredictionsRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation': typeof InvestigationIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/administration': typeof AdministrationRoute
   '/analytics': typeof AnalyticsRoute
   '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -114,6 +131,7 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/predictions': typeof PredictionsRoute
   '/reports': typeof ReportsRoute
+  '/settings': typeof SettingsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation/': typeof InvestigationIndexRoute
 }
@@ -121,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/administration'
     | '/analytics'
     | '/assistant'
     | '/forgot-password'
@@ -129,11 +148,13 @@ export interface FileRouteTypes {
     | '/map'
     | '/predictions'
     | '/reports'
+    | '/settings'
     | '/investigation/$firId'
     | '/investigation/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/administration'
     | '/analytics'
     | '/assistant'
     | '/forgot-password'
@@ -142,11 +163,13 @@ export interface FileRouteTypes {
     | '/map'
     | '/predictions'
     | '/reports'
+    | '/settings'
     | '/investigation/$firId'
     | '/investigation'
   id:
     | '__root__'
     | '/'
+    | '/administration'
     | '/analytics'
     | '/assistant'
     | '/forgot-password'
@@ -155,12 +178,14 @@ export interface FileRouteTypes {
     | '/map'
     | '/predictions'
     | '/reports'
+    | '/settings'
     | '/investigation/$firId'
     | '/investigation/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdministrationRoute: typeof AdministrationRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AssistantRoute: typeof AssistantRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -169,12 +194,20 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   PredictionsRoute: typeof PredictionsRoute
   ReportsRoute: typeof ReportsRoute
+  SettingsRoute: typeof SettingsRoute
   InvestigationFirIdRoute: typeof InvestigationFirIdRoute
   InvestigationIndexRoute: typeof InvestigationIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reports': {
       id: '/reports'
       path: '/reports'
@@ -231,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalyticsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/administration': {
+      id: '/administration'
+      path: '/administration'
+      fullPath: '/administration'
+      preLoaderRoute: typeof AdministrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -257,6 +297,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdministrationRoute: AdministrationRoute,
   AnalyticsRoute: AnalyticsRoute,
   AssistantRoute: AssistantRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
@@ -265,9 +306,20 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   PredictionsRoute: PredictionsRoute,
   ReportsRoute: ReportsRoute,
+  SettingsRoute: SettingsRoute,
   InvestigationFirIdRoute: InvestigationFirIdRoute,
   InvestigationIndexRoute: InvestigationIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
