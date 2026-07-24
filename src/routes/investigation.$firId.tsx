@@ -12,6 +12,7 @@ import {
   Sparkles, Calendar, Building2, Landmark, Fingerprint, AlertCircle, Download,
 } from "lucide-react";
 import { format } from "date-fns";
+import type { FIR } from "@/types";
 
 export const Route = createFileRoute("/investigation/$firId")({
   head: ({ params }) => ({
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/investigation/$firId")({
 });
 
 function CaseDetail() {
-  const { fir } = Route.useLoaderData();
+  const { fir } = Route.useLoaderData() as { fir: FIR };
   const { data: allFirs = [] } = useQuery({ queryKey: ["firs"], queryFn: () => mockService.listFIRs() });
   const related = allFirs.filter((f) => fir.relatedFirIds.includes(f.id)).slice(0, 5);
 
