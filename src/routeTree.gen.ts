@@ -9,15 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntelligenceRouteImport } from './routes/intelligence'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InvestigationIndexRouteImport } from './routes/investigation.index'
 import { Route as InvestigationFirIdRouteImport } from './routes/investigation.$firId'
 
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PredictionsRoute = PredictionsRouteImport.update({
+  id: '/predictions',
+  path: '/predictions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
@@ -36,6 +49,11 @@ const IntelligenceRoute = IntelligenceRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnalyticsRoute = AnalyticsRouteImport.update({
@@ -62,20 +80,26 @@ const InvestigationFirIdRoute = InvestigationFirIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/intelligence': typeof IntelligenceRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/predictions': typeof PredictionsRoute
+  '/reports': typeof ReportsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation/': typeof InvestigationIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/intelligence': typeof IntelligenceRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/predictions': typeof PredictionsRoute
+  '/reports': typeof ReportsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation': typeof InvestigationIndexRoute
 }
@@ -83,10 +107,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
+  '/assistant': typeof AssistantRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/intelligence': typeof IntelligenceRoute
   '/login': typeof LoginRoute
   '/map': typeof MapRoute
+  '/predictions': typeof PredictionsRoute
+  '/reports': typeof ReportsRoute
   '/investigation/$firId': typeof InvestigationFirIdRoute
   '/investigation/': typeof InvestigationIndexRoute
 }
@@ -95,30 +122,39 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/analytics'
+    | '/assistant'
     | '/forgot-password'
     | '/intelligence'
     | '/login'
     | '/map'
+    | '/predictions'
+    | '/reports'
     | '/investigation/$firId'
     | '/investigation/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/analytics'
+    | '/assistant'
     | '/forgot-password'
     | '/intelligence'
     | '/login'
     | '/map'
+    | '/predictions'
+    | '/reports'
     | '/investigation/$firId'
     | '/investigation'
   id:
     | '__root__'
     | '/'
     | '/analytics'
+    | '/assistant'
     | '/forgot-password'
     | '/intelligence'
     | '/login'
     | '/map'
+    | '/predictions'
+    | '/reports'
     | '/investigation/$firId'
     | '/investigation/'
   fileRoutesById: FileRoutesById
@@ -126,16 +162,33 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  AssistantRoute: typeof AssistantRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   IntelligenceRoute: typeof IntelligenceRoute
   LoginRoute: typeof LoginRoute
   MapRoute: typeof MapRoute
+  PredictionsRoute: typeof PredictionsRoute
+  ReportsRoute: typeof ReportsRoute
   InvestigationFirIdRoute: typeof InvestigationFirIdRoute
   InvestigationIndexRoute: typeof InvestigationIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/predictions': {
+      id: '/predictions'
+      path: '/predictions'
+      fullPath: '/predictions'
+      preLoaderRoute: typeof PredictionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/map': {
       id: '/map'
       path: '/map'
@@ -162,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/analytics': {
@@ -198,10 +258,13 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
+  AssistantRoute: AssistantRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   IntelligenceRoute: IntelligenceRoute,
   LoginRoute: LoginRoute,
   MapRoute: MapRoute,
+  PredictionsRoute: PredictionsRoute,
+  ReportsRoute: ReportsRoute,
   InvestigationFirIdRoute: InvestigationFirIdRoute,
   InvestigationIndexRoute: InvestigationIndexRoute,
 }
