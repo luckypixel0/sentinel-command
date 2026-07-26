@@ -1,5 +1,4 @@
 <img width="1774" height="887" alt="image" src="https://github.com/user-attachments/assets/c56b629c-843c-4a6b-80ad-7874e164c3a5" />
-# SentinelAI
 <h3 align="center">
 AI-Powered Crime Intelligence & Investigation Platform
 </h3>
