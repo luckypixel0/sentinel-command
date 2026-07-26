@@ -91,14 +91,8 @@ export type FileRoute<TPath extends string = string> = {
 // createFileRoute("/path")(options) — returns a route descriptor with helper hooks.
 export function createFileRoute<TPath extends string>(path: TPath) {
   return (opts: Partial<FileRoute<TPath>>): FileRoute<TPath> => {
-    const route: FileRoute<TPath> = { path, ...opts };
-    route.useLoaderData = () => {
-      // Loader data is exposed via a route-scoped hook. We call the loader
-      // synchronously using route params — mock services return promises but
-      // components generally re-fetch via react-query. To keep the migration
-      // minimal we throw a suspense-like promise once, then cache.
-      return useLoaderDataFor(route);
-    };
+    const route = { path, ...opts } as FileRoute<TPath>;
+    route.useLoaderData = () => useLoaderDataFor(route);
     route.useRouteContext = () => ({ queryClient: (globalThis as any).__sentinelQueryClient });
     route.useParams = () => useRRParams();
     route.useSearch = () => ({});
