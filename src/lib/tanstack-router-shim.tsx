@@ -37,11 +37,14 @@ export const Outlet = RROutlet;
 
 export function useNavigate() {
   const nav = useRRNavigate();
-  return (arg: string | { to?: string; params?: Record<string, any>; replace?: boolean }) => {
+  return (arg: string | { to?: string; params?: Record<string, any>; search?: any; replace?: boolean }) => {
     if (typeof arg === "string") return nav(arg);
     if (!arg) return;
     const path = resolvePath(arg.to, arg.params);
-    nav(path, { replace: arg.replace });
+    const search = arg.search
+      ? "?" + new URLSearchParams(Object.entries(arg.search).map(([k, v]) => [k, String(v)])).toString()
+      : "";
+    nav(path + search, { replace: arg.replace });
   };
 }
 
