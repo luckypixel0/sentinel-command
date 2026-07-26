@@ -82,10 +82,10 @@ export type FileRoute<TPath extends string = string> = {
   errorComponent?: React.ComponentType<any>;
   notFoundComponent?: React.ComponentType<any>;
   shellComponent?: React.ComponentType<any>;
-  useLoaderData?: () => any;
-  useRouteContext?: () => any;
-  useParams?: () => any;
-  useSearch?: () => any;
+  useLoaderData: () => any;
+  useRouteContext: () => any;
+  useParams: () => any;
+  useSearch: () => any;
 };
 
 // createFileRoute("/path")(options) — returns a route descriptor with helper hooks.
