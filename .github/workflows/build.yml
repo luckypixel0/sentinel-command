@@ -2,7 +2,8 @@ name: Build SentinelAI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -10,17 +11,57 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v2
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - run: bun install
+      - name: Install dependencies
+        run: bun install
 
-      - run: bun run build
+      - name: Build project
+        run: bun run build
 
-      - uses: actions/upload-artifact@v4
+      - name: Locate build output
+        run: |
+          echo "===== DIST ====="
+          find . -type d -name dist || true
+          echo "===== BUILD ====="
+          find . -type d -name build || true
+          echo "===== OUTPUT ====="
+          find . -type d -name .output || true
+          echo "===== VINXI ====="
+          find . -type d -name .vinxi || true
+          echo "===== ROOT ====="
+          ls -la
+
+      - name: Upload dist
+        if: ${{ hashFiles('**/dist/**') != '' }}
+        uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: '**/dist'
+
+      - name: Upload build
+        if: ${{ hashFiles('**/build/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: '**/build'
+
+      - name: Upload output
+        if: ${{ hashFiles('**/.output/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: output
+          path: '**/.output'
+
+      - name: Upload vinxi
+        if: ${{ hashFiles('**/.vinxi/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vinxi
+          path: '**/.vinxi'
