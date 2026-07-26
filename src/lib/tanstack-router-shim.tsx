@@ -37,11 +37,14 @@ export const Outlet = RROutlet;
 
 export function useNavigate() {
   const nav = useRRNavigate();
-  return (arg: string | { to?: string; params?: Record<string, any>; replace?: boolean }) => {
+  return (arg: string | { to?: string; params?: Record<string, any>; search?: any; replace?: boolean }) => {
     if (typeof arg === "string") return nav(arg);
     if (!arg) return;
     const path = resolvePath(arg.to, arg.params);
-    nav(path, { replace: arg.replace });
+    const search = arg.search
+      ? "?" + new URLSearchParams(Object.entries(arg.search).map(([k, v]) => [k, String(v)])).toString()
+      : "";
+    nav(path + search, { replace: arg.replace });
   };
 }
 
@@ -79,23 +82,17 @@ export type FileRoute<TPath extends string = string> = {
   errorComponent?: React.ComponentType<any>;
   notFoundComponent?: React.ComponentType<any>;
   shellComponent?: React.ComponentType<any>;
-  useLoaderData?: () => any;
-  useRouteContext?: () => any;
-  useParams?: () => any;
-  useSearch?: () => any;
+  useLoaderData: () => any;
+  useRouteContext: () => any;
+  useParams: () => any;
+  useSearch: () => any;
 };
 
 // createFileRoute("/path")(options) — returns a route descriptor with helper hooks.
 export function createFileRoute<TPath extends string>(path: TPath) {
   return (opts: Partial<FileRoute<TPath>>): FileRoute<TPath> => {
-    const route: FileRoute<TPath> = { path, ...opts };
-    route.useLoaderData = () => {
-      // Loader data is exposed via a route-scoped hook. We call the loader
-      // synchronously using route params — mock services return promises but
-      // components generally re-fetch via react-query. To keep the migration
-      // minimal we throw a suspense-like promise once, then cache.
-      return useLoaderDataFor(route);
-    };
+    const route = { path, ...opts } as FileRoute<TPath>;
+    route.useLoaderData = () => useLoaderDataFor(route);
     route.useRouteContext = () => ({ queryClient: (globalThis as any).__sentinelQueryClient });
     route.useParams = () => useRRParams();
     route.useSearch = () => ({});
