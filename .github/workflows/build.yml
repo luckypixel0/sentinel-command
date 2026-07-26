@@ -25,43 +25,8 @@ jobs:
       - name: Build project
         run: bun run build
 
-      - name: Locate build output
-        run: |
-          echo "===== DIST ====="
-          find . -type d -name dist || true
-          echo "===== BUILD ====="
-          find . -type d -name build || true
-          echo "===== OUTPUT ====="
-          find . -type d -name .output || true
-          echo "===== VINXI ====="
-          find . -type d -name .vinxi || true
-          echo "===== ROOT ====="
-          ls -la
-
       - name: Upload dist
-        if: ${{ hashFiles('**/dist/**') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: '**/dist'
-
-      - name: Upload build
-        if: ${{ hashFiles('**/build/**') != '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: '**/build'
-
-      - name: Upload output
-        if: ${{ hashFiles('**/.output/**') != '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: output
-          path: '**/.output'
-
-      - name: Upload vinxi
-        if: ${{ hashFiles('**/.vinxi/**') != '' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: vinxi
-          path: '**/.vinxi'
+          path: dist
